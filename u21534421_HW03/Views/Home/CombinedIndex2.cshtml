@@ -1,0 +1,232 @@
+﻿@model u21534421_HW03.Models.CombinedViewModel2
+@using PagedList.Mvc;
+@using PagedList;
+
+@{
+    ViewBag.Title = "CombinedIndex2";
+}
+
+
+
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+</head>
+
+<body>
+    <div class="row">
+        <div class="col-md-6">
+            <h2> Authors</h2>
+            <p>
+                <button class="btn btn-success">
+                    <a href="#" class="create-link" data-url="@Url.Action("Create", "authors")" style="color:white">Add an Author</a>
+                </button>
+            </p>
+            <table class="table" style="width:100%">
+                <tr>
+                    <th>
+                        ID
+                    </th>
+                    <th>
+                        Name
+                    </th>
+                    <th>
+                        Surname
+                    </th>
+                </tr>
+
+                @foreach (var item in Model.Author)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.authorId)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.surname)
+                        </td>
+                        <td class="text-end">
+                            <button class="btn btn-primary">
+                                <a href="#" class="edit-link" data-url="@Url.Action("Edit", "authors", new { id = item.authorId })" style="color:white"><i class="fa fa-edit"></i></a>
+                            </button>
+                            <button class="btn btn-danger">
+                                <a href="#" class="delete-link" data-url="@Url.Action("Delete", "authors", new { id = item.authorId })" style="color:white"><i class="fa fa-trash"></i></a>
+                            </button>
+                        </td>
+                    </tr>
+                }
+
+            </table>
+            Page @(Model.Author.PageCount < Model.Author.PageNumber ? 0 : Model.Author.PageNumber) of @Model.Author.PageCount
+
+            @Html.PagedListPager(Model.Author, page => Url.Action("CombinedIndex2",
+                new { page = page, page2 = 1, page3 = 1 }))
+        </div>
+
+        <div class="col-md-1">
+        </div>
+        <div class="col-md-5">
+            <h2> Types</h2>
+            <p>
+                <button class="btn btn-success">
+                    <a href="#" class="create-link" data-url="@Url.Action("Create", "types")" style="color:white">Add Type</a>
+                </button>
+            </p>
+            <table class="table" style="width:100%">
+                <tr>
+                    <th>
+                        ID
+                    </th>
+                    <th>
+                        Name
+                    </th>
+                </tr>
+
+                @foreach (var item in Model.Type)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.typeId)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.name)
+                        </td>
+                        <td class="text-end">
+                            <button class="btn btn-primary">
+                                <a href="#" class="edit-link" data-url="@Url.Action("Edit", "types", new { id = item.typeId })" style="color:white"><i class="fa fa-edit"></i></a>
+                            </button>
+                            <button class="btn btn-danger">
+                                <a href="#" class="delete-link" data-url="@Url.Action("Delete", "types", new { id = item.typeId })" style="color:white"><i class="fa fa-trash"></i></a>
+                            </button>
+                        </td>
+                    </tr>
+                }
+
+            </table>
+            Page @(Model.Type.PageCount < Model.Type.PageNumber ? 0 : Model.Type.PageNumber) of @Model.Type.PageCount
+
+            @Html.PagedListPager(Model.Type, page => Url.Action("CombinedIndex2",
+                new { page = 1, page2 = 1, page3 = page }))
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <h2>Borrows</h2>
+            <p>
+                <button class="btn btn-success">
+                    <a href="#" class="create-link" data-url="@Url.Action("Create", "borrows")" style="color:white">Borrow a Book</a>
+                </button>
+            </p>
+            <table class="table" style="width:100%">
+                <tr>
+                    <th>
+                        ID
+                    </th>
+                    <th>
+                        Student Name
+                    </th>
+                    <th>
+                        Book Name
+                    </th>
+                    <th>
+                        Taken Date
+                    </th>
+                    <th>
+                        Brought Date
+                    </th>
+                </tr>
+
+                @foreach (var item in Model.Borrow)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.borrowId)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.student.name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.book.name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.takenDate)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.broughtDate)
+                        </td>
+                        <td class="text-end">
+                            <button class="btn btn-primary">
+                                <a href="#" class="edit-link" data-url="@Url.Action("Edit", "borrows", new { id = item.borrowId })" style="color:white"><i class="fa fa-edit"></i></a>
+                            </button>
+                            <button class="btn btn-danger">
+                                <a href="#" class="delete-link" data-url="@Url.Action("Delete", "borrows", new { id = item.borrowId })" style="color:white"><i class="fa fa-trash"></i></a>
+                            </button>
+                        </td>
+                    </tr>
+                }
+
+            </table>
+            Page @(Model.Borrow.PageCount < Model.Borrow.PageNumber ? 0 : Model.Borrow.PageNumber) of @Model.Borrow.PageCount
+
+            @Html.PagedListPager(Model.Borrow, page => Url.Action("CombinedIndex2",
+                new { page = 1, page2 = page, page3 = 1 }))
+        </div>
+    </div>
+
+    <div id="myModal" class="modal fade" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="modal-content">
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+<script>
+        $(function () {
+            $(".edit-link, .edit-link-in-modal").click(function (e) {
+                e.preventDefault();
+                var url = $(this).data("url");
+
+                $.get(url, function (data) {
+                    $("#modal-content").empty();
+                    $("#modal-content").html(data);
+                    $("#myModal").modal("show");
+                });
+            });
+
+            $("#modal-content").on("submit", "form", function (e) {
+                e.preventDefault();
+                var form = $(this);
+                var url = form.attr("action");
+                var formData = form.serialize();
+
+                $.post(url, formData, function (data) {
+                    $("#myModal").modal("hide");
+                    location.reload();
+                });
+            });
+
+            $(".details-link, .delete-link, .create-link, .create-lookup-link").click(function (e) {
+                e.preventDefault();
+                var url = $(this).data("url");
+
+                $.get(url, function (data) {
+                    $("#modal-content").empty();
+                    $("#modal-content").html(data);
+                    $("#myModal").modal("show");
+                });
+            });
+        });
+</script>
+
+

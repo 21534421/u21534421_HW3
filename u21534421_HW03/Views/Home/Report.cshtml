@@ -1,0 +1,93 @@
+﻿
+@{
+    ViewBag.Title = "Report";
+}
+<head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.67/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.67/vfs_fonts.js"></script>
+</head>
+<h2>Report</h2>
+<div>
+    <canvas id="myChart" width="400" height="400"></canvas>
+
+</div>
+<button id="downloadPdf">Download PDF</button>
+
+
+@section scripts {
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.67/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.67/vfs_fonts.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" integrity="sha512-BNaRQnYJYiPSqHHDb58B0yaPfCu+Wgds8Gp/gU33kqBtgNS4tSPHuGibyoeqMV/TJlSKda6FXzoEyYGjTe+vXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+
+    <script>
+        $(document).ready(function () {
+
+
+            // Fetch data from the controller
+            $.ajax({
+                type: 'GET',
+                url: '@Url.Action("ChartData", "Home")', // Adjust the URL as needed
+                success: function (data) {
+                    var labels = data.TypeName;
+                    var values = data.Count;
+                    var ctx = document.getElementById('myChart').getContext('2d');
+
+                    new Chart (ctx, {
+                        type: 'bar',
+                        data: {
+                            labels: labels,
+                            datasets: [{
+                                label: 'Bar Chart Showing Borrows Per Book Type',
+                                data: values,
+                                backgroundColor: 'rgba(162, 50, 168, 0.2)',
+                                borderColor: 'rgba(105, 23, 110, 1)',
+                                borderWidth: 1
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            scales: {
+                                y: {
+                                    beginAtZero: true
+                                }
+                            }
+                        }
+                    });
+                },
+                error: function (error) {
+                    console.error("Error fetching data: " + error);
+                }
+            });
+
+        });
+        document.getElementById("downloadPdf").addEventListener("click", function () {
+            var canvas = document.getElementById("myChart");
+
+            // Create a PDF document definition
+            var docDefinition = {
+                content: [
+                    { text: "Graph Report", style: "header" },
+                    {
+                        image: canvas.toDataURL("image/jpeg"), // Convert canvas to image
+                        width: 400, // Adjust the width and height as needed
+                        height: 300,
+                    },
+                ],
+                styles: {
+                    header: {
+                        fontSize: 18,
+                        bold: true,
+                    },
+                },
+            };
+
+            // Create and open the PDF
+            pdfMake.createPdf(docDefinition).open();
+        });
+
+    </script>
+}
